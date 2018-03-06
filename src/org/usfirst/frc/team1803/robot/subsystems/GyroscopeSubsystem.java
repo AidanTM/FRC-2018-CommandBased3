@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class GyroscopeSubsystem extends Subsystem {
 
+	//Identify the gyro variable and other values.
     ADXRS450_Gyro gyro;
     
     double turnGoal;
@@ -32,23 +33,37 @@ public class GyroscopeSubsystem extends Subsystem {
 	    gyro.calibrate();
 	    SmartDashboard.putNumber("gyro", getAngle());
 	    DriverStation.reportWarning("Gyro calibrated.", false);
-    }
+    }	
     
+    /**
+     * Gets the value of the gyro's angle
+     * @return The angle of the gyro as a value from ???-???
+     */
     public double getAngle()
     {
     	return gyro.getAngle();
     }
     
+    /**
+     * Sets the gyro's value to zero.
+     */
     public void resetAngle()
     {
     	gyro.reset();
     }
     
+    /**
+     * Sets up the gyro.
+     */
     public void calibrate()
     {
     	gyro.calibrate();
     }
     
+    /**
+     * Turns the robot a specified amount of degrees.
+     * @param degrees Amount of degrees to turn clockwise (When looking from above)
+     */
     public void turnDegrees(double degrees) //Range of Gyro values: (???-???) TODO: FIND THIS VALUE
     {
     	if (isTurning) return; //To prevent multiple turn degree commands from being run at once.

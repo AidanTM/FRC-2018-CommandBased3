@@ -43,7 +43,7 @@ public class DrivetrainSubsystem extends Subsystem {
     	right = new SpeedControllerGroup(rightFront, rightBack);
     	
     	drivetrain = new DifferentialDrive(left, right);
-    	
+    	//Disable safety
     	leftFront.setSafetyEnabled(false);
     	leftBack.setSafetyEnabled(false);
     	rightFront.setSafetyEnabled(false);
@@ -52,7 +52,11 @@ public class DrivetrainSubsystem extends Subsystem {
     	
     	setDefaultCommand(new DriveCommand());
     }
-    
+    /**
+     * Sets the speed value of the drive train.
+     * @param y
+     * @param x
+     */
     public void Drive(double y, double x) {
     	//drivetrain.arcadeDrive(y, x);
     	drivetrain.curvatureDrive(y, x, true);
