@@ -43,6 +43,7 @@ public class Robot extends TimedRobot {
 	public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 	public static BucketSubsystem bucketSubsystem = new BucketSubsystem();
 	public static GyroscopeSubsystem gyroscopeSubsystem = new GyroscopeSubsystem();
+	public static CameraSubsystem cameraSubsystem = new CameraSubsystem();
 	
 	Thread m_visionThread;
 	
@@ -65,7 +66,7 @@ public class Robot extends TimedRobot {
 		m_chooser.addObject("Right Start: Drive Forward and Score", 3);
 		SmartDashboard.putData("Autonomous Selector", m_chooser);
 		
-		initCamera();
+		//initCamera();
 		
 		Servo cameraServo = new Servo(9); //TODO Attempted to get the servo to rotate, did not work
 		cameraServo.setAngle(90);

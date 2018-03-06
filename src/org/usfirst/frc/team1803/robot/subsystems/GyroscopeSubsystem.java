@@ -68,11 +68,17 @@ public class GyroscopeSubsystem extends Subsystem {
     {
     	if (isTurning) return; //To prevent multiple turn degree commands from being run at once.
     	
-    	isTurning = true;
+    	double turnValue; //Set the turn direction depending on if the degrees value is negative or not.
+    	if (degrees < 0.0) turnValue = -0.5;
+    	else if (degrees > 0.0) turnValue = 0.5;
+    	else return;
+    	
+    	isTurning = true; //Initiate some values.
     	turnGoal = getAngle() + degrees;
-    	while (Math.abs(turnGoal - getAngle()) > 1.0)
-    	{
-    		Robot.drivetrainSubsystem.Drive(0, 0.5);
+    	
+    	while (Math.abs(turnGoal - getAngle()) > 1.0) //Turning loop.
+    	{ // TODO: Maybe we can use a periodic loop to do this rather than using the timer?
+    		Robot.drivetrainSubsystem.Drive(0, turnValue);
     		Timer.delay(0.005);
     	}
     	isTurning = false;

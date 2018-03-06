@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class IntakeCommand extends Command {
 	
+	//Set up the identifiers
 	XboxController controller = OI.controller;
+	//Values for the individual controller triggers
 	double speedValLeft;
 	double speedValRight;
 
@@ -26,9 +28,11 @@ public class IntakeCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	//Initiate the speed values from the controller.
     	speedValLeft = OI.controller.getTriggerAxis(Hand.kLeft);
     	speedValRight = OI.controller.getTriggerAxis(Hand.kRight);
     	//if (OI.controller.getAButton()) speedVal *= -1;
+    	//Set the intake speed based off the values of the triggers
     	if (speedValLeft > .1)
     		Robot.intakeSubsystem.intakeSpeed(speedValLeft * -1);
     	else if (speedValRight > .1)

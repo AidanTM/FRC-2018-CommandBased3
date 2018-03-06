@@ -27,5 +27,8 @@ public class RobotMap {
 	public static Talon rightIntakeMotor = new Talon(6);
 	
 	public static Talon bucketMotor = new Talon(7);
+	
+	public static Talon cameraXMotor = new Talon(8);
+	public static Talon cameraYMotor = new Talon(9);
 
 }
