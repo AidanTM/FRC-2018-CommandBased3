@@ -22,6 +22,7 @@ public class GyroscopeSubsystem extends Subsystem {
     boolean isTurning;
 
     
+    
     public void initDefaultCommand() {
     	
     	gyro = new ADXRS450_Gyro(Port.kOnboardCS0);
