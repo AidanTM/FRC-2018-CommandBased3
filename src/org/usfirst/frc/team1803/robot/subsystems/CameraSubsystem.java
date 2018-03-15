@@ -11,18 +11,18 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ * CameraSubsystem - Handles (almost) all things related to the camera.
  */
 public class CameraSubsystem extends Subsystem {
 
 	Thread m_visionThread;
 	
-	Talon motorX;
-	Talon motorY;
+	Spark motorX;
+	Spark motorY;
 	
 	SpeedControllerGroup cameraMotorGroup;
 	
@@ -32,7 +32,7 @@ public class CameraSubsystem extends Subsystem {
     public void initDefaultCommand() {
     	
     	motorX = RobotMap.cameraXMotor;
-    	motorY = RobotMap.cameraYMotor;
+    	//motorY = RobotMap.cameraYMotor;
     	
     	cameraMotorGroup = new SpeedControllerGroup(motorX, motorY);
     	
@@ -74,10 +74,8 @@ public class CameraSubsystem extends Subsystem {
 				outputStream.putFrame(mat);
 			}
 		});
-		m_visionThread.setDaemon(true);
-		m_visionThread.start();
-		
-        //setDefaultCommand(new MySpecialCommand());
+		//m_visionThread.setDaemon(true);
+		//m_visionThread.start();
     }
     
     

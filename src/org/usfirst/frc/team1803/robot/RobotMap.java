@@ -8,7 +8,7 @@
 package org.usfirst.frc.team1803.robot;
 
 //import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Spark;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -17,18 +17,18 @@ import edu.wpi.first.wpilibj.Talon;
  * floating around.
  */
 public class RobotMap {
-	public static Talon leftFrontDrivetrainMotor = new Talon(1);
-	public static Talon leftBackDrivetrainMotor = new Talon(2);
+	public static Spark leftFrontDrivetrainMotor = new Spark(1);
+	public static Spark leftBackDrivetrainMotor = new Spark(2);
 	
-	public static Talon rightFrontDrivetrainMotor = new Talon(3);
-	public static Talon rightBackDrivetrainMotor = new Talon(4);
+	public static Spark rightFrontDrivetrainMotor = new Spark(3);
+	public static Spark rightBackDrivetrainMotor = new Spark(4);
 	
-	public static Talon leftIntakeMotor = new Talon(5);
-	public static Talon rightIntakeMotor = new Talon(6);
+	public static Spark leftIntakeMotor = new Spark(5);
+	public static Spark rightIntakeMotor = new Spark(6);
 	
-	public static Talon bucketMotor = new Talon(7);
+	public static Spark bucketMotor = new Spark(7);
 	
-	public static Talon cameraXMotor = new Talon(8);
-	public static Talon cameraYMotor = new Talon(9);
+	public static Spark cameraXMotor = new Spark(8);
+	//public static Spark cameraYMotor = new Spark(9);
 
 }

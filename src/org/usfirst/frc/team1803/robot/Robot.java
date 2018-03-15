@@ -225,7 +225,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testInit() { //Currently testing the gyroscope spin.
-		Robot.gyroscopeSubsystem.turnDegrees(180);
+		Robot.gyroscopeSubsystem.turnDegrees(45);
+		//DriverStation.reportWarning("" + Robot.gyroscopeSubsystem.getAngle(),false);
 	}
 	
 	/**
@@ -235,11 +236,11 @@ public class Robot extends TimedRobot {
 	public void testPeriodic() {
 		//.reportWarning("TriggerAxis Left: " + OI.controller.getTriggerAxis(Hand.kLeft), false);
 		//DriverStation.reportWarning("TriggerAxis Right: " + OI.controller.getTriggerAxis(Hand.kRight), false);
-		testing++;
-		if (testing > 200)
-		{
-			DriverStation.reportWarning("Gyro:" + gyroscopeSubsystem.getAngle(), false);
-			testing = 0;
-		}
+		//testing++;
+		//if (testing > 100)
+		//{
+		//	DriverStation.reportWarning("Gyro:" + gyroscopeSubsystem.getAngle(), false);
+		//	testing = 0;
+		//}
 	}
 }

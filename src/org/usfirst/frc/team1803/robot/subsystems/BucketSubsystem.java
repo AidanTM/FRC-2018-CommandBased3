@@ -3,7 +3,7 @@ package org.usfirst.frc.team1803.robot.subsystems;
 import org.usfirst.frc.team1803.robot.RobotMap;
 import org.usfirst.frc.team1803.robot.commands.BucketCommand;
 
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class BucketSubsystem extends Subsystem {
 
-    Talon bucketMotor;
+    Spark bucketMotor;
     
     /**
      * Runs when the robot is powered on. Initializes the
-     * bucket motor talon and disables its safety.
+     * bucket motor Spark and disables its safety.
      * Sets up the default command.
      */
     public void initDefaultCommand() {

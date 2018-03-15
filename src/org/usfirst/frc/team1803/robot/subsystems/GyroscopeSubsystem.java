@@ -66,21 +66,26 @@ public class GyroscopeSubsystem extends Subsystem {
      */
     public void turnDegrees(double degrees) //Range of Gyro values: (???-???) TODO: FIND THIS VALUE
     {
+    	if (Math.abs(degrees - 0.00001) < 3) return;
+    	
     	if (isTurning) return; //To prevent multiple turn degree commands from being run at once.
     	
-    	double turnValue; //Set the turn direction depending on if the degrees value is negative or not.
-    	if (degrees < 0.0) turnValue = -0.5;
-    	else if (degrees > 0.0) turnValue = 0.5;
+    	turnGoal = getAngle() + degrees;
+    	
+    	double turnValue = 0.2; //Set the turn direction depending on if the degrees value is negative or not.
+    	if (getAngle() < turnGoal) turnValue *= 1;
+    	else if (getAngle() > turnGoal) turnValue *= -1;
     	else return;
     	
     	isTurning = true; //Initiate some values.
-    	turnGoal = getAngle() + degrees;
     	
-    	while (Math.abs(turnGoal - getAngle()) > 1.0) //Turning loop.
+    	DriverStation.reportWarning("getAngle(): " + getAngle() + " turnGoal: " + turnGoal, false);
+    	while ((turnValue < 0 && getAngle() > turnGoal) || (turnValue > 0 && getAngle() < turnGoal)) //Turning loop.
     	{ // TODO: Maybe we can use a periodic loop to do this rather than using the timer?
     		Robot.drivetrainSubsystem.Drive(0, turnValue);
     		Timer.delay(0.005);
     	}
+    	
     	isTurning = false;
     }
 }
