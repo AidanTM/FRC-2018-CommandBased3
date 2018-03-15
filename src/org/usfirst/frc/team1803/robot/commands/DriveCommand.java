@@ -16,7 +16,7 @@ public class DriveCommand extends Command {
 	
 	double[] speedVal = new double[2];
 	
-	boolean highGear = false;
+	int gearLevel = 1;
 	
 	boolean test = true;
 	
@@ -33,25 +33,21 @@ public class DriveCommand extends Command {
     protected void execute() {
     	
     	speedVal[0] = -controller.getY(Hand.kLeft);
-    	speedVal[1] = controller.getX(Hand.kLeft)*.7;
+    	speedVal[1] = controller.getX(Hand.kLeft)*.5;
     	
     	SmartDashboard.putNumber("Left Stick Y", speedVal[0]);
     	SmartDashboard.putNumber("Left Stick X", speedVal[1]);
     	
-    	if (controller.getAButtonPressed()) //Uses the A button to toggle between high and low gear
-    		if (highGear)
-    			highGear = false;
-    		else
-    			highGear = true;
+    	if (controller.getPOV() == 315) gearLevel = -1;
+    	if (controller.getPOV() == 0) gearLevel = 0;
+    	if (controller.getPOV() == 90) gearLevel = 1;
     	
-    	SmartDashboard.putBoolean("In High Gear?", highGear);
+    	SmartDashboard.putNumber("Gear Level", gearLevel);
     	//SmartDashboard.putBoolean("DB/LED 0", highGear);
     	
-    	if (!highGear)
-    	{
-    		speedVal[0] *= 0.5;
-    		speedVal[1] *= 0.5;
-    	}
+    	speedVal[0] *= (0.5 + (0.25 * gearLevel));
+    	speedVal[1] *= (0.5 + (0.25 * gearLevel));
+    		
     	Robot.drivetrainSubsystem.Drive(speedVal[0], speedVal[1]);
     }
 

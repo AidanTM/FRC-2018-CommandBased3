@@ -32,7 +32,7 @@ public class GyroscopeSubsystem extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
 	    gyro.calibrate();
-	    SmartDashboard.putNumber("gyro", getAngle());
+	    SmartDashboard.putNumber("Gyro", getAngle());
 	    DriverStation.reportWarning("Gyro calibrated.", false);
     }	
     
@@ -67,20 +67,17 @@ public class GyroscopeSubsystem extends Subsystem {
      */
     public void turnDegrees(double degrees) //Range of Gyro values: (???-???) TODO: FIND THIS VALUE
     {
-    	if (Math.abs(degrees - 0.00001) < 3) return;
-    	
-    	if (isTurning) return; //To prevent multiple turn degree commands from being run at once.
+    	if (Math.abs(degrees - 0.00001) < 3 || isTurning) return;
     	
     	turnGoal = getAngle() + degrees;
     	
-    	double turnValue = 0.2; //Set the turn direction depending on if the degrees value is negative or not.
+    	double turnValue = 0.3; //Set the turn direction depending on if the degrees value is negative or not.
     	if (getAngle() < turnGoal) turnValue *= 1;
     	else if (getAngle() > turnGoal) turnValue *= -1;
     	else return;
     	
     	isTurning = true; //Initiate some values.
     	
-    	DriverStation.reportWarning("getAngle(): " + getAngle() + " turnGoal: " + turnGoal, false);
     	while ((turnValue < 0 && getAngle() > turnGoal) || (turnValue > 0 && getAngle() < turnGoal)) //Turning loop.
     	{ // TODO: Maybe we can use a periodic loop to do this rather than using the timer?
     		Robot.drivetrainSubsystem.Drive(0, turnValue);
