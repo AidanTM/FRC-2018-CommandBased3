@@ -64,3 +64,17 @@ if (false) //autonomousMode == 1
 				Robot.gyroscopeSubsystem.turnDegrees(55);
 			}
 		}
+		
+--OLD AUTO CODE--
+
+//String autoSelected = SmartDashboard.getString("Autonomous Selector","Default Auto"); 
+		DriverStation.reportWarning("Mode: " + m_autonomousCommand.getName(), false);
+		/*switch(autoSelected) { 
+		case "My Auto": m_autonomousCommand = new AutoSideCommand(); break; 
+		case "Default Auto": default: m_autonomousCommand = new AutoDefaultCommand(); break; 
+		}*/
+		
+		//Some remaining code...
+		
+		autonomousMode = (int) SmartDashboard.getFlags("Autonomous Selector");
+		DriverStation.reportWarning("Mode: " + autonomousMode, false);

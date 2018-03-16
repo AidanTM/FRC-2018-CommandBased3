@@ -59,7 +59,7 @@ public class DrivetrainSubsystem extends Subsystem {
      */
     public void Drive(double y, double x) {
     	//drivetrain.arcadeDrive(y, x);
-    	drivetrain.curvatureDrive(y, x, true);
+    	drivetrain.curvatureDrive(y, x + (x * 1.2), true);
     }
 }
 

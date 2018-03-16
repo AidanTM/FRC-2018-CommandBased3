@@ -23,7 +23,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-//import org.usfirst.frc.team1803.robot.commands.DriveCommand;
+import org.usfirst.frc.team1803.robot.commands.*;
 import org.usfirst.frc.team1803.robot.subsystems.*;
 
 /**
@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
-	SendableChooser<Integer> m_chooser;
+	SendableChooser<Command> m_chooser;
 
 	public static DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
 	public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
@@ -61,10 +61,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		m_chooser = new SendableChooser<Integer>();
-		m_chooser.addDefault("Far Left/Right Start: Drive Forward, Don't Score", 1);
-		m_chooser.addObject("Left Start: Drive Forward and Score", 2);
-		m_chooser.addObject("Right Start: Drive Forward and Score", 3);
+		m_chooser = new SendableChooser<Command>();
+		m_chooser.addDefault("Middle Start - Wait, Navigate to right of Switch.", new AutoDefaultCommand());
+		m_chooser.addObject("Left / Right Start - Straight forward", new AutoSideCommand());
 		SmartDashboard.putData("Autonomous Selector", m_chooser);
 		
 		//initCamera();
@@ -146,24 +145,18 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		//m_autonomousCommand = m_chooser.getSelected();
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
-		/*if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
-		}*/
-		autonomousMode = (int) SmartDashboard.getFlags("Autonomous Selector");
-		DriverStation.reportWarning("Mode: " + autonomousMode, false);
+		
+		Robot.gyroscopeSubsystem.resetAngle(); //reset the angle of the gyro
 		autonomousTimer = 0; //Reset the timer
 		autonomousStep = 1; //Reset the step number
 		gameData = DriverStation.getInstance().getGameSpecificMessage(); //Get the game specific message, will be RRR, LLL, RLR, LRL
-		Robot.gyroscopeSubsystem.resetAngle(); //reset the angle of the gyro
+		
+		m_autonomousCommand = m_chooser.getSelected();
+		
+		// schedule the autonomous command (example)
+		if (m_autonomousCommand != null) {
+			m_autonomousCommand.start();
+		}
 	}
 
 	/**
@@ -171,7 +164,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() { //Called every 1/50 of a second.
-		//Scheduler.getInstance().run(); //TODO not sure if this should be removed
+		Scheduler.getInstance().run(); //TODO not sure if this should be removed
 	}
 
 	@Override
@@ -182,11 +175,6 @@ public class Robot extends TimedRobot {
 		// this line or comment it out.
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
-		}
-		
-		switch (autonomousMode)
-		{
-			case 0: AutoSideCommand(); break;
 		}
 	}
 
