@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -171,36 +170,8 @@ public class Robot extends TimedRobot {
 	 * This function is called periodically during autonomous.
 	 */
 	@Override
-	public void autonomousPeriodic() {
+	public void autonomousPeriodic() { //Called every 1/50 of a second.
 		//Scheduler.getInstance().run(); //TODO not sure if this should be removed
-		
-		if (autonomousMode == 1)
-		{
-			if (autonomousStep == 1)	//Step #1, drive forward for 2 seconds (100 loops) at 0.5 speed
-				if (autonomousTimer <= 100) {
-					//double angle = Robot.gyroscopeSubsystem.getAngle();
-					//Robot.drivetrainSubsystem.Drive(0.5, -angle*.03); //TODO example that I found online, will use the gyro to drive forward, will have to experiment to find the correct value to multiply the gyro angle by
-					Robot.drivetrainSubsystem.Drive(0.5, 0);
-					autonomousTimer++;
-				}
-				else {	//Step is finished, reset timer and go to the next step
-					autonomousTimer = 0;
-					autonomousStep++;
-					Robot.drivetrainSubsystem.Drive(0, 0);
-				}
-			if (autonomousStep == 2 && ( //
-					(gameData.charAt(0) == 'L' && m_chooser.getSelected().equals(2)) || //Check if the switch is on the left side and we started on the left side
-					(gameData.charAt(0) == 'R' && m_chooser.getSelected().equals(3)) )) //Check if the switch is on the right side and we started on the right side
-				if (autonomousTimer <= 50) {
-					Robot.bucketSubsystem.setBucketSpeed(-.2);
-					autonomousTimer++;
-				}
-				else { //Step is finished, reset timer and go to the next step
-					autonomousTimer = 0;
-					autonomousStep++;
-					Robot.bucketSubsystem.setBucketSpeed(0);
-				}
-		}
 	}
 
 	@Override
@@ -213,7 +184,10 @@ public class Robot extends TimedRobot {
 			m_autonomousCommand.cancel();
 		}
 		
-		
+		switch (autonomousMode)
+		{
+			case 0: AutoSideCommand(); break;
+		}
 	}
 
 	/**
@@ -222,8 +196,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
-		
 	}
 
 	/**

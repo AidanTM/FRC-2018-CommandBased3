@@ -1,0 +1,66 @@
+/////////////////////////////////////////////////////////////
+/////	This text file contains chunks of code that		/////
+///// have been removed but still may be of use later.	/////
+/////////////////////////////////////////////////////////////
+
+--ORIGINAL AUTO CODE--
+
+if (false) //autonomousMode == 1
+		{
+			if (autonomousStep == 1)	//Step #1, drive forward for 2 seconds (100 loops) at 0.5 speed
+				if (autonomousTimer <= 100) {
+					//double angle = Robot.gyroscopeSubsystem.getAngle();
+					//Robot.drivetrainSubsystem.Drive(0.5, -angle*.03); //TODO example that I found online, will use the gyro to drive forward, will have to experiment to find the correct value to multiply the gyro angle by
+					Robot.drivetrainSubsystem.Drive(0.5, 0);
+					autonomousTimer++;
+				}
+				else {	//Step is finished, reset timer and go to the next step
+					autonomousTimer = 0;
+					autonomousStep++;
+					Robot.drivetrainSubsystem.Drive(0, 0);
+				}
+			if (autonomousStep == 2 && ( //
+					(gameData.charAt(0) == 'L' && m_chooser.getSelected().equals(2)) || //Check if the switch is on the left side and we started on the left side
+					(gameData.charAt(0) == 'R' && m_chooser.getSelected().equals(3)) ))
+			{ //Check if the switch is on the right side and we started on the right side
+				if (autonomousTimer <= 50) {
+					Robot.bucketSubsystem.setBucketSpeed(-.2);
+					autonomousTimer++;
+				}
+				else { //Step is finished, reset timer and go to the next step
+					autonomousTimer = 0;
+					autonomousStep++;
+					Robot.bucketSubsystem.setBucketSpeed(0);
+				}
+			}
+		}
+		else if (true) //autonomousMode == 1
+		{
+			if (autonomousStep == 1)
+			{
+				autonomousTimer++;
+				if (autonomousTimer > 150) //Wait for other robots to do their thing
+				{
+					autonomousStep++;
+					autonomousTimer = 0;
+				}
+			}
+			else if (autonomousStep == 1)
+			{
+				if (autonomousTimer <= 25) {
+					//double angle = Robot.gyroscopeSubsystem.getAngle();
+					//Robot.drivetrainSubsystem.Drive(0.5, -angle*.03); //TODO example that I found online, will use the gyro to drive forward, will have to experiment to find the correct value to multiply the gyro angle by
+					Robot.drivetrainSubsystem.Drive(0.5, 0);
+					autonomousTimer++;
+				}
+				else {	//Step is finished, reset timer and go to the next step
+					autonomousTimer = 0;
+					autonomousStep++;
+					Robot.drivetrainSubsystem.Drive(0, 0);
+				}
+			}
+			else if (autonomousStep == 2)
+			{
+				Robot.gyroscopeSubsystem.turnDegrees(55);
+			}
+		}

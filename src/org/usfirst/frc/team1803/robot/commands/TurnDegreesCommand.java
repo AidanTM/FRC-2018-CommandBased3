@@ -9,28 +9,32 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class TurnDegreesCommand extends Command {
 
-	double initDegrees;
+	double degreeCount;
 	
-    public TurnDegreesCommand() {
+	final int MIN_TURNTIME = 20; //In 1/50 seconds.
+	
+	int timerVal; //We need to set a minimal
+	//time to finish the turn since the robot needs time to set up the turn
+	
+    public TurnDegreesCommand(double angleMod) {
         requires(Robot.gyroscopeSubsystem);
+        degreeCount = angleMod;
     }
 
     // Called just before this Command runs the first time
-    protected void initialize(double anglemod) {
-    	//initDegrees = Robot.gyroscopeSubsystem.getAngle();
-    	initDegrees = Robot.gyroscopeSubsystem.getAngle() + anglemod;
+    protected void initialize() {
+    	timerVal = 0;
+    	Robot.gyroscopeSubsystem.turnDegrees(degreeCount);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrainSubsystem.Drive(0, 0.5);
-    	
+    	if (timerVal < MIN_TURNTIME) timerVal++;
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if (Math.abs(initDegrees - getAngle()) < 1) return true;
-        return false;
+        return (timerVal >= MIN_TURNTIME && Robot.gyroscopeSubsystem.isTurning());
     }
 
     // Called once after isFinished returns true

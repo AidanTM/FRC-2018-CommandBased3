@@ -46,6 +46,15 @@ public class GyroscopeSubsystem extends Subsystem {
     }
     
     /**
+     * Gets if the robot is turning.
+     * @return Boolean if the robot is turning.
+     */
+    public boolean isTurning()
+    {
+    	return isTurning;
+    }
+    
+    /**
      * Sets the gyro's value to zero.
      */
     public void resetAngle()

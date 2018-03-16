@@ -5,15 +5,19 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutoDefaultCommand extends CommandGroup {
+public class AutoSideCommand extends CommandGroup {
 
-    public AutoDefaultCommand() {
+    public AutoSideCommand() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.
+    	addSequential(new DelayCommand(2.0));
+    	addSequential(new DriveAutoCommand(1.0, 0.5));
     	addSequential(new TurnDegreesCommand(55));
-
+    	addSequential(new DriveAutoCommand(1.5, 0.5));
+    	addSequential(new TurnDegreesCommand(-55));
+    	addSequential(new DriveAutoCommand(3.0, 0.5));
         // To run multiple commands at the same time,
         // use addParallel()
         // e.g. addParallel(new Command1());
