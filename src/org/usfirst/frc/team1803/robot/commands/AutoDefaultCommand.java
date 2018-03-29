@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1803.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**

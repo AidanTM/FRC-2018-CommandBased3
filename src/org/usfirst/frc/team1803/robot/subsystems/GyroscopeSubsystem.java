@@ -79,6 +79,7 @@ public class GyroscopeSubsystem extends Subsystem {
     	if (Math.abs(degrees - 0.00001) < 3 || isTurning) return;
     	
     	turnGoal = getAngle() + degrees;
+    	//double initalAngle = getAngle();
     	
     	double turnValue = 0.3; //Set the turn direction depending on if the degrees value is negative or not.
     	if (getAngle() < turnGoal) turnValue *= 1;
@@ -86,12 +87,31 @@ public class GyroscopeSubsystem extends Subsystem {
     	else return;
     	
     	isTurning = true; //Initiate some values.
-    	
-    	while ((turnValue < 0 && getAngle() > turnGoal) || (turnValue > 0 && getAngle() < turnGoal)) //Turning loop.
-    	{ // TODO: Maybe we can use a periodic loop to do this rather than using the timer?
-    		Robot.drivetrainSubsystem.Drive(0, turnValue);
-    		Timer.delay(0.005);
+    	//(turnValue < 0 && getAngle() > turnGoal) || (turnValue > 0 && getAngle() < turnGoal)
+    	SmartDashboard.putNumber("Final Angle", turnGoal);
+    	DriverStation.reportWarning("InitAngle: " + getAngle() + " Final Angle: " + turnGoal, false);
+    	if (turnValue > 0)
+    	{
+    		while (getAngle() < turnGoal) //Turning loop.
+        	{
+    			SmartDashboard.putNumber("Final Angle", turnGoal);
+    			SmartDashboard.putNumber("Gyro", gyro.getAngle());
+        		Robot.drivetrainSubsystem.Drive(0, turnValue);
+        		Timer.delay(0.005);
+        	}
     	}
+    	else// if (turnValue < 0)
+    	{
+    		while (getAngle() > turnGoal) //Turning loop.
+        	{
+    			SmartDashboard.putNumber("Final Angle", turnGoal);
+    			SmartDashboard.putNumber("Gyro", gyro.getAngle());
+        		Robot.drivetrainSubsystem.Drive(0, turnValue);
+        		Timer.delay(0.005);
+        	}
+    	}
+    	Robot.drivetrainSubsystem.Drive(0, 0);
+    	DriverStation.reportWarning("DONE InitAngle: " + getAngle() + " Final Angle: " + turnGoal, false);
     	
     	isTurning = false;
     }

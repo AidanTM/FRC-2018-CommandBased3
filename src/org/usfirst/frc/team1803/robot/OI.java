@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team1803.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -17,8 +18,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	public static XboxController controller = new XboxController(0);
-	
-	JoystickButton xboxAButton = new JoystickButton(controller, 1);
+	public static Joystick controller2;
+	//JoystickButton xboxAButton = new JoystickButton(controller, 1);
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
 	//// joystick.

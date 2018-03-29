@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser;
+	SendableChooser<Integer> m_chooser2;
 
 	public static DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
 	public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
@@ -48,6 +49,8 @@ public class Robot extends TimedRobot {
 	Thread m_visionThread;
 	
 	int testing = 0;
+	
+	public static int driveMode;
 	
 	int autonomousMode = 0;
 	int autonomousTimer = 0; //Used to count loops in autonomous mode, 50 loops = 1 second
@@ -65,6 +68,11 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Middle Start - Wait, Navigate to right of Switch.", new AutoDefaultCommand());
 		m_chooser.addObject("Left / Right Start - Straight forward", new AutoSideCommand());
 		SmartDashboard.putData("Autonomous Selector", m_chooser);
+		
+		m_chooser2 = new SendableChooser<Integer>();
+		m_chooser2.addDefault("XBOX360 (Port 0)", 0);
+		m_chooser2.addObject("Extreme3D (Port 1)", 1);
+		SmartDashboard.putData("Controller Selection", m_chooser2);
 		
 		//initCamera();
 		
@@ -176,6 +184,8 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		
+		driveMode = m_chooser2.getSelected();
 	}
 
 	/**
@@ -191,7 +201,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testInit() { //Currently testing the gyroscope spin.
-		//Robot.gyroscopeSubsystem.turnDegrees(180);
+		Robot.gyroscopeSubsystem.turnDegrees(90);
 		//DriverStation.reportWarning("" + Robot.gyroscopeSubsystem.getAngle(),false);
 	}
 	

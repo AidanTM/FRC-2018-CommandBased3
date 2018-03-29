@@ -4,6 +4,7 @@ import org.usfirst.frc.team1803.robot.OI;
 import org.usfirst.frc.team1803.robot.Robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class BucketCommand extends Command {
 
 	XboxController controller = OI.controller;
+	Joystick controller2 = OI.controller2;
 	int bucketSpeed = 0;
 	
     public BucketCommand() {
@@ -24,8 +26,20 @@ public class BucketCommand extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	Robot.bucketSubsystem.setBucketSpeed(controller.getY(Hand.kRight) * 0.5);
+    protected void execute() { //TODO: What axis am I going to use for this????
+
+    	if (Robot.driveMode == 0)
+    	{
+    		Robot.bucketSubsystem.setBucketSpeed(controller.getY(Hand.kRight) * 0.5);
+    	}
+    	else if (Robot.driveMode == 1)
+    	{
+    		double speedVal = controller2.getRawAxis(0);
+        	speedVal = Math.round(speedVal * 100) / 100;
+        	if (speedVal > 0.5) Robot.bucketSubsystem.setBucketSpeed(speedVal - 0.5);
+        	else if (speedVal < -0.5) Robot.bucketSubsystem.setBucketSpeed(speedVal + 0.5);
+        	else Robot.bucketSubsystem.setBucketSpeed(0);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
