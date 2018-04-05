@@ -76,20 +76,22 @@ public class GyroscopeSubsystem extends Subsystem {
      */
     public void turnDegrees(double degrees) //Range of Gyro values: (???-???) TODO: FIND THIS VALUE
     {
+    	//DriverStation.reportWarning("stepA", false);
     	if (Math.abs(degrees - 0.00001) < 3 || isTurning) return;
-    	
+    	//DriverStation.reportWarning("stepB", false);
     	turnGoal = getAngle() + degrees;
     	//double initalAngle = getAngle();
     	
-    	double turnValue = 0.3; //Set the turn direction depending on if the degrees value is negative or not.
+    	double turnValue = 0.2; //Set the turn direction depending on if the degrees value is negative or not.
     	if (getAngle() < turnGoal) turnValue *= 1;
     	else if (getAngle() > turnGoal) turnValue *= -1;
     	else return;
-    	
+    	//DriverStation.reportWarning("stepC", false);
     	isTurning = true; //Initiate some values.
+    	SmartDashboard.putBoolean("isTurning", isTurning);
     	//(turnValue < 0 && getAngle() > turnGoal) || (turnValue > 0 && getAngle() < turnGoal)
     	SmartDashboard.putNumber("Final Angle", turnGoal);
-    	DriverStation.reportWarning("InitAngle: " + getAngle() + " Final Angle: " + turnGoal, false);
+    	////DriverStation.reportWarning("InitAngle: " + getAngle() + " Final Angle: " + turnGoal, false);
     	if (turnValue > 0)
     	{
     		while (getAngle() < turnGoal) //Turning loop.
@@ -110,10 +112,13 @@ public class GyroscopeSubsystem extends Subsystem {
         		Timer.delay(0.005);
         	}
     	}
-    	Robot.drivetrainSubsystem.Drive(0, 0);
-    	DriverStation.reportWarning("DONE InitAngle: " + getAngle() + " Final Angle: " + turnGoal, false);
+    	//DriverStation.reportWarning("stepD", false);
+    	Robot.drivetrainSubsystem.drivetrain.tankDrive(0, 0);
+    	////DriverStation.reportWarning("DONE InitAngle: " + getAngle() + " Final Angle: " + turnGoal, false);
     	
     	isTurning = false;
+    	SmartDashboard.putBoolean("isTurning", isTurning);
+    	//DriverStation.reportWarning("stepE", false);
     }
 }
 

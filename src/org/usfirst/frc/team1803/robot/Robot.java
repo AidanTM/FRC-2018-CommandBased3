@@ -201,8 +201,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testInit() { //Currently testing the gyroscope spin.
+		DriverStation.reportWarning("Testing.",false);
 		Robot.gyroscopeSubsystem.turnDegrees(90);
-		//DriverStation.reportWarning("" + Robot.gyroscopeSubsystem.getAngle(),false);
+		Robot.gyroscopeSubsystem.turnDegrees(-90);
 	}
 	
 	/**

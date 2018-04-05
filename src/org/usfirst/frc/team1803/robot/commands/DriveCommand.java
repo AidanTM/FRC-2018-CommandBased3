@@ -39,9 +39,14 @@ public class DriveCommand extends Command {
     		speedVal[0] = -controller.getY(Hand.kLeft);
         	speedVal[1] = controller.getX(Hand.kLeft)*.5;
         	
-        	if (controller.getPOV() == 315) gearLevel = -1;
+        	if (controller.getPOV() == 270) gearLevel = -1;
         	if (controller.getPOV() == 0) gearLevel = 0;
         	if (controller.getPOV() == 90) gearLevel = 1;
+        	
+        	if (controller.getAButton()) gearLevel = 0;
+        	if (controller.getXButton()) gearLevel = 1;
+        	if (controller.getBButton()) gearLevel = -1;
+        	if (controller.getYButton()) gearLevel = -2;
     	}
     	else if (Robot.driveMode == 1)
     	{

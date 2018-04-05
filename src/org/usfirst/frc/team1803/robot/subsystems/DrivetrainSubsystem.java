@@ -24,7 +24,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	//Identify the Spark groups 
 	SpeedControllerGroup left;
 	SpeedControllerGroup right;
-	DifferentialDrive drivetrain; //Differential Drive reverses the two values of the motors.
+	public DifferentialDrive drivetrain; //Differential Drive reverses the two values of the motors.
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.

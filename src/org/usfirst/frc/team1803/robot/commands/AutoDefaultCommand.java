@@ -13,13 +13,19 @@ public class AutoDefaultCommand extends CommandGroup {
         //      addSequential(new Command2());
         // these will run in order.
     	
-    	addSequential(new DelayCommand(2.0));
+    	/*addSequential(new DelayCommand(2.0));
     	addSequential(new DriveAutoCommand(1.0, 0.5));
     	addSequential(new TurnDegreesCommand(74));
     	addSequential(new DriveAutoCommand(1.5, 0.5));
     	addSequential(new TurnDegreesCommand(-74));
-    	addSequential(new DriveAutoCommand(3.0, 0.5));
+    	addSequential(new DriveAutoCommand(3.0, 0.5));*/
     	
+    	addSequential(new DelayCommand(2.0));
+    	addSequential(new DriveAutoCommand(1.0, 0.5));
+    	addSequential(new TurnDegreesCommand(74));
+    	addSequential(new DriveAutoCommand(0.75, 0.5));
+    	addSequential(new TurnDegreesCommand(-74));
+    	addSequential(new DriveAutoCommand(3.0, 0.5));
 
         // To run multiple commands at the same time,
         // use addParallel()

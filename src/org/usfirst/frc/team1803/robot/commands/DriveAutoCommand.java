@@ -2,6 +2,7 @@ package org.usfirst.frc.team1803.robot.commands;
 
 import org.usfirst.frc.team1803.robot.Robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
@@ -20,6 +21,7 @@ public class DriveAutoCommand extends TimedCommand {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	//DriverStation.reportWarning("driveauto:" + driveSpeed, false);
     }
 
     // Called repeatedly when this Command is scheduled to run
