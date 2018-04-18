@@ -4,7 +4,7 @@ import org.usfirst.frc.team1803.robot.RobotMap;
 import org.usfirst.frc.team1803.robot.commands.DriveCommand;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -14,14 +14,14 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class DrivetrainSubsystem extends Subsystem {
 
-	//Identify the four Sparks that make up
+	//Identify the four Talons that make up
 	//the drivetrain subsystem.
-	Spark leftFront;
-	Spark leftBack;
-	Spark rightFront;
-	Spark rightBack;
+	Talon leftFront;
+	Talon leftBack;
+	Talon rightFront;
+	Talon rightBack;
 	
-	//Identify the Spark groups 
+	//Identify the Talon groups 
 	SpeedControllerGroup left;
 	SpeedControllerGroup right;
 	public DifferentialDrive drivetrain; //Differential Drive reverses the two values of the motors.
@@ -32,13 +32,14 @@ public class DrivetrainSubsystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	//Initalize the Sparks.
+    	//Initalize the Talons.
     	leftFront = RobotMap.leftFrontDrivetrainMotor;
     	leftBack = RobotMap.leftBackDrivetrainMotor;
     	rightFront = RobotMap.rightFrontDrivetrainMotor;
     	rightBack = RobotMap.rightBackDrivetrainMotor;
     	
-    	//Initialize the Spark groups
+    	
+    	//Initialize the Talon groups
     	left = new SpeedControllerGroup(leftFront, leftBack);
     	right = new SpeedControllerGroup(rightFront, rightBack);
     	

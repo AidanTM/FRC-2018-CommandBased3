@@ -10,7 +10,7 @@ package org.usfirst.frc.team1803.robot;
 import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+//import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	public static XboxController controller = new XboxController(0);
-	public static Joystick controller2;
+	public static Joystick controller2 = new Joystick(1);
 	//JoystickButton xboxAButton = new JoystickButton(controller, 1);
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a

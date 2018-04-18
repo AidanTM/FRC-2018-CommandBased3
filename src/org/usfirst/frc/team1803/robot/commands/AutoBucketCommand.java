@@ -5,34 +5,26 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutoDefaultCommand extends CommandGroup {
+public class AutoBucketCommand extends CommandGroup {
 
-    public AutoDefaultCommand() {
+    public AutoBucketCommand() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.
-    	
-    	addSequential(new DelayCommand(2.0));
-    	addSequential(new DriveAutoCommand(1.0, 0.5));
-    	addSequential(new TurnDegreesCommand(74));
-    	addSequential(new DriveAutoCommand(1.5, 0.5));
-    	addSequential(new TurnDegreesCommand(-74));
-    	addSequential(new DriveAutoCommand(3.0, 0.5));
-    	
-    	/*addSequential(new DelayCommand(2.0));
-    	addSequential(new DriveAutoCommand(1.0, 0.5));
-    	addSequential(new TurnDegreesCommand(74));
-    	addSequential(new DriveAutoCommand(0.75, 0.5));
-    	addSequential(new TurnDegreesCommand(-74));
-    	addSequential(new DriveAutoCommand(3.0, 0.5));*/
 
         // To run multiple commands at the same time,
         // use addParallel()
         // e.g. addParallel(new Command1());
         //      addSequential(new Command2());
         // Command1 and Command2 will run in parallel.
-
+    	addSequential(new DelayCommand(2.0));
+    	addSequential(new DriveAutoCommand(0.25, 0.5));
+    	addSequential(new TurnDegreesCommand(15));
+    	addSequential(new DriveAutoCommand(0.25, 0.5));
+    	addSequential(new TurnDegreesCommand(-15));
+    	addSequential(new DriveAutoCommand(1.3, 0.4));
+    	addSequential(new AutoSetBucketCommand(3.25));
         // A command group will require all of the subsystems that each member
         // would require.
         // e.g. if Command1 requires chassis, and Command2 requires arm,

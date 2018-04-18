@@ -26,11 +26,10 @@ public class BucketCommand extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() { //TODO: What axis am I going to use for this????
-
+    protected void execute() {
     	if (Robot.driveMode == 0)
     	{
-    		Robot.bucketSubsystem.setBucketSpeed(controller.getY(Hand.kRight) * 0.5);
+    		Robot.bucketSubsystem.setBucketSpeed(controller.getY(Hand.kRight) * 0.65);
     	}
     	else if (Robot.driveMode == 1)
     	{

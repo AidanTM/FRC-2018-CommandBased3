@@ -7,9 +7,20 @@
 
 package org.usfirst.frc.team1803.robot;
 
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team1803.robot.commands.AutoBucketCommand;
+import org.usfirst.frc.team1803.robot.commands.AutoDefaultCommand;
+import org.usfirst.frc.team1803.robot.commands.AutoSetBucketCommand;
+import org.usfirst.frc.team1803.robot.commands.AutoSideCommand;
+import org.usfirst.frc.team1803.robot.subsystems.*;
+
 import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
@@ -18,13 +29,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
-import org.usfirst.frc.team1803.robot.commands.*;
-import org.usfirst.frc.team1803.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,19 +40,28 @@ import org.usfirst.frc.team1803.robot.subsystems.*;
 public class Robot extends TimedRobot {
 	public static OI m_oi;
 
-	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser;
+	Integer m_autonomousCommand;
+	public static boolean m_autoswitch;
+	public static int m_station;
+	Command m_selectedCommand;
+	
+	//Command m_autonomousCommand;
+	//SendableChooser<Command> m_chooser;
+	SendableChooser<Integer> m_chooser;
 	SendableChooser<Integer> m_chooser2;
+	SendableChooser<Integer> m_chooser3;
+	SendableChooser<Boolean> m_chooser4;
 
 	public static DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
 	public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 	public static BucketSubsystem bucketSubsystem = new BucketSubsystem();
 	public static GyroscopeSubsystem gyroscopeSubsystem = new GyroscopeSubsystem();
-	public static CameraSubsystem cameraSubsystem = new CameraSubsystem();
+	//public static CameraSubsystem cameraSubsystem = new CameraSubsystem();
 	
 	Thread m_visionThread;
 	
 	int testing = 0;
+	boolean testing2 = false;
 	
 	public static int driveMode;
 	
@@ -56,7 +69,7 @@ public class Robot extends TimedRobot {
 	int autonomousTimer = 0; //Used to count loops in autonomous mode, 50 loops = 1 second
 	int autonomousStep = 0; //Used to keep track of the current autonomous step
 	String gameData; //Will store the game specific message in AutonomousInit
-	
+	UsbCamera camera;
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -64,15 +77,37 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		m_chooser = new SendableChooser<Command>();
+		camera = CameraServer.getInstance().startAutomaticCapture();
+		/*m_chooser = new SendableChooser<Command>();
+		
 		m_chooser.addDefault("Middle Start - Wait, Navigate to right of Switch.", new AutoDefaultCommand());
 		m_chooser.addObject("Left / Right Start - Straight forward", new AutoSideCommand());
+		SmartDashboard.putData("Autonomous Selector", m_chooser);*/
+		
+		m_chooser = new SendableChooser<Integer>();
+		
+		m_chooser.addDefault("Choose automatically.", 0);
+		m_chooser.addObject("Middle Start - Wait, Navigate to right of Switch.", 1);
+		m_chooser.addObject("Left / Right Start - Straight forward", 2);
+		m_chooser.addObject("Do nothing.", -100);
 		SmartDashboard.putData("Autonomous Selector", m_chooser);
 		
 		m_chooser2 = new SendableChooser<Integer>();
 		m_chooser2.addDefault("XBOX360 (Port 0)", 0);
 		m_chooser2.addObject("Extreme3D (Port 1)", 1);
 		SmartDashboard.putData("Controller Selection", m_chooser2);
+		
+		m_chooser3 = new SendableChooser<Integer>();
+		m_chooser3.addDefault("Choose Automatically.", -1);
+		m_chooser3.addObject("Station 1 (Left)", 1);
+		m_chooser3.addObject("Station 2 (Middle)", 2);
+		m_chooser3.addObject("Station 3 (Right)", 3);
+		SmartDashboard.putData("Station Selection", m_chooser3);
+		
+		m_chooser4 = new SendableChooser<Boolean>();
+		m_chooser4.addDefault("Do <NOT> do auto switch.", false);
+		m_chooser4.addObject("Attempt auto switch.", true);
+		SmartDashboard.putData("Auto Switch Selection", m_chooser4);
 		
 		//initCamera();
 		
@@ -151,19 +186,55 @@ public class Robot extends TimedRobot {
 	 * to the switch structure below with additional strings & commands.
 	 */
 	@Override
-	public void autonomousInit() {
+	public void autonomousInit() { //TODO: Clean up this code...
 		//m_autonomousCommand = m_chooser.getSelected();
 		
 		Robot.gyroscopeSubsystem.resetAngle(); //reset the angle of the gyro
 		autonomousTimer = 0; //Reset the timer
 		autonomousStep = 1; //Reset the step number
 		gameData = DriverStation.getInstance().getGameSpecificMessage(); //Get the game specific message, will be RRR, LLL, RLR, LRL
-		
-		m_autonomousCommand = m_chooser.getSelected();
-		
+		//m_autonomousCommand = m_chooser.getSelected();
+		m_autoswitch = m_chooser4.getSelected();
+		if (m_chooser3.getSelected() == -1) m_station = DriverStation.getInstance().getLocation();
+		else m_station = m_chooser3.getSelected();
+		//m_autonomousCommand = new AutoSideCommand();
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		//m_selectedCommand = new AutoSideCommand();
+		System.out.println(m_chooser.getSelected());
+		if (m_chooser.getSelected() != -100)
+		{
+			if (m_chooser.getSelected() < 1)
+			{
+				System.out.println("X");
+				if (DriverStation.getInstance().getLocation() == 2)
+				{
+					m_selectedCommand = new AutoDefaultCommand();
+					if (m_autoswitch && DriverStation.getInstance().getGameSpecificMessage().substring(0, 1).equals("R"))
+						m_selectedCommand = new AutoBucketCommand();
+				}
+				else m_selectedCommand = new AutoSideCommand();
+			}
+			else if (m_chooser.getSelected() != -100)
+			{
+				System.out.println("A");
+				if (m_chooser.getSelected() == 1)
+					{
+						m_selectedCommand = new AutoDefaultCommand();
+						System.out.println("B");
+						if (m_autoswitch && DriverStation.getInstance().getGameSpecificMessage().substring(0, 1).equals("R"))
+						{
+							System.out.println("C");
+							m_selectedCommand = new AutoBucketCommand();
+						}
+							
+					}
+				else m_selectedCommand = new AutoSideCommand();
+			}
+			
+			
+			if (m_selectedCommand != null) {
+				m_selectedCommand.start();
+			}
 		}
 	}
 
@@ -181,8 +252,8 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (m_selectedCommand != null) {
+			m_selectedCommand.cancel();
 		}
 		
 		driveMode = m_chooser2.getSelected();
@@ -201,9 +272,14 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testInit() { //Currently testing the gyroscope spin.
-		DriverStation.reportWarning("Testing.",false);
-		Robot.gyroscopeSubsystem.turnDegrees(90);
-		Robot.gyroscopeSubsystem.turnDegrees(-90);
+		//DriverStation.reportWarning("Testing.",false);
+		//Robot.gyroscopeSubsystem.turnDegrees(90);
+		//Robot.gyroscopeSubsystem.turnDegrees(-90);
+		//Command buckets = new AutoSetBucketCommand(1);
+		
+		//buckets.start();
+		
+		testing2 = false;
 	}
 	
 	/**
@@ -212,13 +288,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 		Scheduler.getInstance().run();
-		//.reportWarning("TriggerAxis Left: " + OI.controller.getTriggerAxis(Hand.kLeft), false);
-		//DriverStation.reportWarning("TriggerAxis Right: " + OI.controller.getTriggerAxis(Hand.kRight), false);
-		//testing++;
-		//if (testing > 100)
-		//{
-		//	DriverStation.reportWarning("Gyro:" + gyroscopeSubsystem.getAngle(), false);
-		//	testing = 0;
-		//}
+		if (!testing2)
+		{
+			Command buckets = new AutoSetBucketCommand(1);
+			
+			buckets.start();
+			testing2 = true;
+		}
+		
 	}
 }

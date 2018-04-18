@@ -3,7 +3,7 @@ package org.usfirst.frc.team1803.robot.subsystems;
 import org.usfirst.frc.team1803.robot.RobotMap;
 import org.usfirst.frc.team1803.robot.commands.IntakeCommand;
 
-import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -12,14 +12,14 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class IntakeSubsystem extends Subsystem {
 
-	//Identify the two Sparks for the intake
-	Spark leftMotor;
-	Spark rightMotor;
+	//Identify the two Talons for the intake
+	Talon leftMotor;
+	Talon rightMotor;
 	//And then group them up
 	DifferentialDrive motorGroup;
 
     public void initDefaultCommand() {
-    	//Initiate the Spark and DifferentialDrive
+    	//Initiate the Talon and DifferentialDrive
     	leftMotor = RobotMap.leftIntakeMotor;
     	rightMotor = RobotMap.rightIntakeMotor;
     	motorGroup = new DifferentialDrive(leftMotor, rightMotor);

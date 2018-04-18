@@ -20,6 +20,7 @@ public class DriveCommand extends Command {
 	
 	int gearLevel = 1;
 	
+	
 	boolean test = true;
 	
     public DriveCommand() {
