@@ -29,7 +29,7 @@ public class BucketCommand extends Command {
     protected void execute() {
     	if (Robot.driveMode == 0)
     	{
-    		Robot.bucketSubsystem.setBucketSpeed(controller.getY(Hand.kRight) * 0.65);
+    		Robot.bucketSubsystem.setBucketSpeed(controller.getY(Hand.kRight) * 0.55);
     	}
     	else if (Robot.driveMode == 1)
     	{
